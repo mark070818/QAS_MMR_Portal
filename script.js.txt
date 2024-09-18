@@ -1,0 +1,41 @@
+ Import the Google API Client Library
+const { google } = require('googleapis');
+
+ Set up your Google Sheets API credentials
+const apiKey = 'YOUR_API_KEY';
+const sheetId = 'YOUR_SHEET_ID';
+const range = 'Sheet1!A1B2';  Adjust this to the range you want to read
+
+ Set up the Google Sheets API client
+const sheets = google.sheets({ version 'v4', auth apiKey });
+
+ Get the data from the Google Sheet
+async function getSheetData() {
+    try {
+        const response = await sheets.spreadsheets.values.get({
+            spreadsheetId sheetId,
+            range range,
+        });
+        const data = response.data.values;
+        return data;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+ Display the data on the website
+async function displaySheetData() {
+    const data = await getSheetData();
+    const sheetDataDiv = document.getElementById('sheet-data');
+    sheetDataDiv.innerHTML = '';
+    data.forEach((row) = {
+        const rowDiv = document.createElement('div');
+        rowDiv.textContent = row.join(', ');
+        sheetDataDiv.appendChild(rowDiv);
+    });
+}
+
+ Link to the Google Sheet
+document.getElementById('link-to-sheet').addEventListener('click', () = {
+    displaySheetData();
+});
